@@ -1,2 +1,2 @@
-# Assignement_Embedded_OS
-Assignement 2021/2022
+# Assignment_Embedded_OS
+Assignment 2021/2022
