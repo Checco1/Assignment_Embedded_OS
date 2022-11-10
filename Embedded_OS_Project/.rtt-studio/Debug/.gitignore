@@ -1,0 +1,11 @@
+/Applications/
+/CORTEX-M3/
+/DeviceDrivers/
+/Drivers/
+/Kernel/
+/STM32_HAL/
+/finsh/
+/kernel-sample/
+/makefile
+/objects.mk
+/sources.mk
