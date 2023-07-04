@@ -24,7 +24,6 @@
 
 #include <rtthread.h>
 #include <rtdevice.h>
-#include <dfs_posix.h>
 
 
 int main(void)
