@@ -426,3 +426,7 @@ OS/build/timer.d
 OS/build/timer_sample.d
 OS/build/timeslice_sample.d
 OS/project.uvguix.Francesco
+Router_V0.1/makefile.targets
+Router_V0.1/.settings/projcfg.ini
+Router_V0.1/.settings/language.settings.xml
+Router_V0.1/.settings/.rtmenus
