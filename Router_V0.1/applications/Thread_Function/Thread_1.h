@@ -3,16 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
+#include <time.h>
 #include <rtthread.h>
-#define V 6
+#include "./Thread_Function/config.h"
 
-
-void printSolution(int dist[], int parent[], int src);
-int findMinDistance(int dist[], int visited[]);
-void printPath(int parent[], int j);
-void dijkstra(int graph[V][V], int src);
-void example();
+void random_mixer();
+void printer();
 
 
 #endif

@@ -2,17 +2,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <rtthread.h>
+#include "./Thread_Function/config.h"
+#include "./Thread_Function/Dijkstra_example.h"
 #include "./Thread_Function/Thread_1.h"
+
+extern usr users[MAX_USER];
+extern int g_matrix[MAX_USER][MAX_USER];
+extern int active_user;
+
+static rt_thread_t tid1 = RT_NULL;
 
 int main(void)
 {
-    int graph[V][V] = { { 0, 1, 4, 0, 0, 0 },
-                        { 1, 0, 7, 5, 0, 0 },
-                        { 4, 7, 0, 1, 3, 0 },
-                        { 0, 5, 1, 0, 2, 6 },
-                        { 0, 0, 3, 2, 0, 4 },
-                        { 0, 0, 0, 6, 4, 0 } };
-    dijkstra(graph, 0);
+    active_user = 10;
+    tid1 = rt_thread_create("thread1",
+            random_mixer, RT_NULL,
+                                512, 25, 5);
+    rt_thread_startup(tid1);
+
     return 0;
 }
-
