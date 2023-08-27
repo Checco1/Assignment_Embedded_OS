@@ -21,4 +21,6 @@ int g_matrix[MAX_USER][MAX_USER];
 
 int active_user;
 
+static struct rt_semaphore matrix_sem;
+
 #endif
