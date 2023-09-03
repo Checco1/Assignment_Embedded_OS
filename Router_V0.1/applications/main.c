@@ -7,15 +7,25 @@
 #include "./Thread_Function/Thread_1.h"
 #include "./Thread_Function/wdg.h"
 
-extern usr users[MAX_USER];
-extern int g_matrix[MAX_USER][MAX_USER];
-extern int active_user;
-extern struct rt_semaphore matrix_sem;
-
-static rt_thread_t tid1 = RT_NULL;
-
 int main(void)
 {
+
+    // Set to UNKNOWN all status flags
+    STATUS_THREAD_1 = UNKNOWN;
+    STATUS_THREAD_2 = UNKNOWN;
+
+    rt_sem_init(&matrix_sem, "matrixsem", 1, RT_IPC_FLAG_FIFO);
+    active_user = 10;
+
+    rt_thread_init(&thread1,
+                   "thread1",
+                   random_mixer,
+                   &matrix_sem,
+                   &thread1_stack[0],
+                   sizeof(thread1_stack),
+                   20, 5);
+
+    rt_thread_startup(&thread1);
 
     /* Initialize WDG MONITOR Timer */
     rt_timer_init(&wdg_monitor_timer, "timer1",  /* Timer name is timer1 */
@@ -34,21 +44,8 @@ int main(void)
                     RT_TICK_PER_SECOND*WDG_TIME_SEC, /* Timing length in OS Tick, 10 OS Tick */
                     RT_TIMER_FLAG_PERIODIC); /* Periodic timer */
 
-
     /* Start WDG Timer */
     rt_timer_start(&wdg_timer);
-
-    // Set to UNKNOWN all status flags
-    STATUS_THREAD_1 = UNKNOWN;
-    STATUS_THREAD_2 = UNKNOWN;
-
-    rt_sem_init(&matrix_sem, "matrixsem", 1, RT_IPC_FLAG_FIFO);
-    active_user = 10;
-    rt_sem_release(&matrix_sem);
-
-    tid1 = rt_thread_create("thread1",
-            random_mixer, &matrix_sem, 512, 25, 5);
-    rt_thread_startup(tid1);
 
     return 0;
 }

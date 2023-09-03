@@ -9,10 +9,12 @@
  */
 #include <Thread_Function/Dijkstra_example.h>
 
+extern int active_user;
+
 // Funzione per stampare le distanze e i percorsi più brevi
 void printSolution(int dist[], int parent[], int src) {
     printf("Nodo \t Distanza \t Percorso\n");
-    for (int i = 0; i < V; i++) {
+    for (int i = 0; i < active_user; i++) {
         printf("%d \t %d \t\t ", i, dist[i]);
         printPath(parent, i);
         printf("\n");

@@ -10,5 +10,4 @@
 void random_mixer();
 void printer();
 
-
 #endif

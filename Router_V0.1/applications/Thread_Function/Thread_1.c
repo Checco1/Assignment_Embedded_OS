@@ -1,9 +1,5 @@
 #include "Thread_Function/Thread_1.h"
 
-extern usr users[MAX_USER];
-extern int g_matrix[MAX_USER][MAX_USER];
-extern int active_user;
-
 void random_mixer(struct rt_semaphore *matrix_sem){
 
     int randomUsr1;

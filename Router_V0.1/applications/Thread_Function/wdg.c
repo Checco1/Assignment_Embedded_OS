@@ -1,5 +1,6 @@
 #include "Thread_Function/wdg.h"
 #include "./Thread_Function/config.h"
+#include "./Thread_Function/Thread_1.h"
 
 void wdg_monitor_timeout(void *parameter)
 {
@@ -46,22 +47,23 @@ void wdg_timeout(void *parameter)
             // Ricrea i thread
             rt_thread_init(&thread1,
                            "thread1",
-                           thread_entry1,
-                           (void*)1,
+                           random_mixer,
+                           &matrix_sem,
                            &thread1_stack[0],
                            sizeof(thread1_stack),
-                           THREAD_PRIORITY-5, THREAD_TIMESLICE);
+                           20, 5);
+
             rt_thread_startup(&thread1);
 
 
-            rt_thread_init(&thread2,
-                           "thread2",
-                           thread_entry2,
-                           (void*)2,
-                           &thread2_stack[0],
-                           sizeof(thread2_stack),
-                           THREAD_PRIORITY, THREAD_TIMESLICE-5);
-            rt_thread_startup(&thread2);
+//            rt_thread_init(&thread2,
+//                           "thread2",
+//                           thread_entry2,
+//                           (void*)2,
+//                           &thread2_stack[0],
+//                           sizeof(thread2_stack),
+//                           THREAD_PRIORITY, THREAD_TIMESLICE-5);
+//            rt_thread_startup(&thread2);
 
             rt_thread_delay(RT_TICK_PER_SECOND*10);
             rt_kprintf("WATCHDOG recreated all threads \n");

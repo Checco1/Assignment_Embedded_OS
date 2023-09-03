@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <rtthread.h>
-#define V 6
+#include "./Thread_Function/config.h"
+#define V 100
 
 void printSolution(int dist[], int parent[], int src);
 int findMinDistance(int dist[], int visited[]);

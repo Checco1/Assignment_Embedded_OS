@@ -7,13 +7,12 @@
 
 #define true 1
 #define false 0
-#define ALIVE               0
-#define UNKNOWN             1
+#define ALIVE 0
+#define UNKNOWN 1
+#define WDG_MONITOR_TIME_SEC 12
+#define WDG_TIME_SEC 15
 
-#define WDG_MONITOR_TIME_SEC       12
-#define WDG_TIME_SEC       15
-
-
+//Custom structure used by the modem
 typedef struct user {
     char name[MAX_CHAR];
     int isActive;
@@ -22,16 +21,27 @@ typedef struct user {
 } usr;
 
 usr users[MAX_USER];
-
 int g_matrix[MAX_USER][MAX_USER];
-
 int active_user;
 
+//Pointers for threads
+static struct rt_thread thread1;
+static char thread1_stack[1024];
+static struct rt_thread thread2;
+static char thread2_stack[1024];
+static struct rt_thread watchdog;
+
+//Pointers for Semaphore
+static struct rt_semaphore active_sem;
 static struct rt_semaphore matrix_sem;
+static struct rt_semaphore users_sem;
+
+//Pointers for timers
 static struct rt_timer wdg_monitor_timer;
 static struct rt_timer wdg_timer;
-// THREAD STATUS FLAGS
-extern rt_flag_t STATUS_THREAD_1;
-extern rt_flag_t STATUS_THREAD_2;
+
+//Thread status flags
+static rt_flag_t STATUS_THREAD_1;
+static rt_flag_t STATUS_THREAD_2;
 
 #endif
