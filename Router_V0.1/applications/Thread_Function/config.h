@@ -28,7 +28,7 @@ int active_user;
 static struct rt_thread thread1;
 static char thread1_stack[1024];
 static struct rt_thread thread2;
-static char thread2_stack[1024];
+static char thread2_stack[4096];
 static struct rt_thread watchdog;
 
 //Pointers for Semaphore
@@ -43,5 +43,14 @@ static struct rt_timer wdg_timer;
 //Thread status flags
 static rt_flag_t STATUS_THREAD_1;
 static rt_flag_t STATUS_THREAD_2;
+
+
+typedef struct parameters_timer_monitor_wdg {
+    struct rt_thread thread1;
+    struct rt_thread thread2;
+    struct rt_timer wdg_timer;
+} parameters;
+
+parameters prova;
 
 #endif

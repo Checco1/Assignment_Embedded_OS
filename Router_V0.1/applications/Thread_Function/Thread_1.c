@@ -27,7 +27,8 @@ void random_mixer(struct rt_semaphore *matrix_sem){
 
             rt_kprintf("Matrix Updated!\n");
 
-            rt_thread_delay(500);
+            STATUS_THREAD_1 = ALIVE;
+            rt_thread_delay(RT_TICK_PER_SECOND*5);
         }
     }
 };

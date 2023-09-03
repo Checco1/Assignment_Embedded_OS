@@ -1,8 +1,8 @@
 #include "Thread_Function/wdg.h"
-#include "./Thread_Function/config.h"
-#include "./Thread_Function/Thread_1.h"
 
-void wdg_monitor_timeout(void *parameter)
+
+
+void wdg_monitor_timeout(struct parameters_timer_monitor_wdg *prova)
 {
     rt_tick_t clock_tick;
     clock_tick = rt_tick_get();
@@ -13,14 +13,14 @@ void wdg_monitor_timeout(void *parameter)
         rt_tick_t resetTimeValue;
         resetTimeValue = RT_TICK_PER_SECOND*WDG_TIME_SEC;
 
-        rt_timer_stop(&wdg_timer);
-        rt_timer_control(&wdg_timer, RT_TIMER_CTRL_SET_TIME, &resetTimeValue);
-        rt_timer_start(&wdg_timer);
+        rt_timer_stop(&(prova->wdg_timer));
+        rt_timer_control(&(prova->wdg_timer), RT_TIMER_CTRL_SET_TIME, &resetTimeValue);
+        rt_timer_start(&(prova->wdg_timer));
 
     } else {
 
-        rt_thread_detach(&thread1);
-        rt_thread_detach(&thread2);
+        rt_thread_detach(&(prova->thread1));
+        rt_thread_detach(&(prova->thread2));
 
         rt_kprintf("NO BUENO!!! \n");
         rt_kprintf("STATUS_THREAD_1 is %d\n", STATUS_THREAD_1);
@@ -33,7 +33,7 @@ void wdg_monitor_timeout(void *parameter)
         STATUS_THREAD_2 = UNKNOWN;
 }
 
-void wdg_timeout(void *parameter)
+void wdg_timeout()
 {
 
     rt_kprintf("WATCHDOG is called, time is up!!! \n");
@@ -56,15 +56,15 @@ void wdg_timeout(void *parameter)
             rt_thread_startup(&thread1);
 
 
-//            rt_thread_init(&thread2,
-//                           "thread2",
-//                           thread_entry2,
-//                           (void*)2,
-//                           &thread2_stack[0],
-//                           sizeof(thread2_stack),
-//                           THREAD_PRIORITY, THREAD_TIMESLICE-5);
-//            rt_thread_startup(&thread2);
+            rt_thread_init(&thread2,
+                           "thread2",
+                           solver,
+                           &matrix_sem,
+                           &thread2_stack[0],
+                           sizeof(thread2_stack),
+                           20, 10);
+            rt_thread_startup(&thread2);
 
-            rt_thread_delay(RT_TICK_PER_SECOND*10);
+            rt_thread_delay(RT_TICK_PER_SECOND*15);
             rt_kprintf("WATCHDOG recreated all threads \n");
 }
