@@ -5,8 +5,8 @@
 #define MAX_CHAR 256
 #define MAX_DIST 150
 
-#define true 1
-#define false 0
+#define TRUE 1
+#define FALSE 0
 #define ALIVE 0
 #define UNKNOWN 1
 #define DEAD 2

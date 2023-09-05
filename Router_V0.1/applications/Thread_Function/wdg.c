@@ -42,7 +42,6 @@ void wdg_monitor_timeout()
 
     }
 
-
 }
 
 void wdg_timeout()

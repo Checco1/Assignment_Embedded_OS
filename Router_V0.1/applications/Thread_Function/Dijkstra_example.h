@@ -12,7 +12,8 @@ void printSolution(int dist[], int parent[], int src);
 int findMinDistance(int dist[], int visited[]);
 void printPath(int parent[], int j);
 void dijkstra(int graph[V][V], int src);
-void example();
+
+void updatestruct(int dist[], int src);
 
 
 #endif

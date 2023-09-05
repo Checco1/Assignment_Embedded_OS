@@ -14,7 +14,7 @@ extern int active_user;
 // Funzione per stampare le distanze e i percorsi più brevi
 void printSolution(int dist[], int parent[], int src) {
     printf("Nodo \t Distanza \t Percorso\n");
-    for (int i = 0; i < active_user; i++) {
+    for (int i = 0; i < V; i++) {
         printf("%d \t %d \t\t ", i, dist[i]);
         printPath(parent, i);
         printf("\n");
@@ -66,19 +66,31 @@ void dijkstra(int graph[V][V], int src) {
             }
         }
     }
+
+    updatestruct(dist, src);
+
     // Stampa la soluzione
-    printSolution(dist, parent, src);
+    //printSolution(dist, parent, src);
 }
 
-void example(){
-    int graph[V][V] = { { 0, 1, 4, 0, 0, 0 },
-                        { 1, 0, 7, 5, 0, 0 },
-                        { 4, 7, 0, 1, 3, 0 },
-                        { 0, 5, 1, 0, 2, 6 },
-                        { 0, 0, 3, 2, 0, 4 },
-                        { 0, 0, 0, 6, 4, 0 } };
-    dijkstra(graph, 0);
-}
+void updatestruct(int dist[], int src){
 
-/* export the msh command */
-MSH_CMD_EXPORT(example, dij);
+    extern usr users[MAX_USER];
+    extern struct rt_semaphore users_sem;
+
+    rt_sem_take(&users_sem, RT_WAITING_FOREVER);
+
+    for(int i=0; i<MAX_USER; i++){
+        if(dist[i] != INT_MAX){
+            //Users connected
+            users[src].distance[i] = dist[i];
+        }
+        else {
+            //Users not connected
+            users[src].distance[i] = -1;
+        }
+    }
+
+    rt_sem_release(&users_sem);
+
+};
