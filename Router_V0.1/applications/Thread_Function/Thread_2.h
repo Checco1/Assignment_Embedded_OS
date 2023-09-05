@@ -8,6 +8,6 @@
 #include "./Thread_Function/config.h"
 #include "./Thread_Function/Dijkstra_example.h"
 
-void solver(struct rt_semaphore *matrix_sem);
+void solver();
 
 #endif

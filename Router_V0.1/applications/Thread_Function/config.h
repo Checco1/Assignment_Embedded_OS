@@ -9,6 +9,7 @@
 #define false 0
 #define ALIVE 0
 #define UNKNOWN 1
+#define DEAD 2
 #define WDG_MONITOR_TIME_SEC 12
 #define WDG_TIME_SEC 15
 
@@ -25,32 +26,21 @@ int g_matrix[MAX_USER][MAX_USER];
 int active_user;
 
 //Pointers for threads
-static struct rt_thread thread1;
-static char thread1_stack[1024];
-static struct rt_thread thread2;
-static char thread2_stack[4096];
-static struct rt_thread watchdog;
+rt_thread_t thread1;
+rt_thread_t thread2;
+struct rt_thread watchdog;
 
 //Pointers for Semaphore
-static struct rt_semaphore active_sem;
-static struct rt_semaphore matrix_sem;
-static struct rt_semaphore users_sem;
+struct rt_semaphore active_sem;
+struct rt_semaphore matrix_sem;
+struct rt_semaphore users_sem;
 
 //Pointers for timers
-static struct rt_timer wdg_monitor_timer;
-static struct rt_timer wdg_timer;
+struct rt_timer wdg_monitor_timer;
+struct rt_timer wdg_timer;
 
 //Thread status flags
-static rt_flag_t STATUS_THREAD_1;
-static rt_flag_t STATUS_THREAD_2;
-
-
-typedef struct parameters_timer_monitor_wdg {
-    struct rt_thread thread1;
-    struct rt_thread thread2;
-    struct rt_timer wdg_timer;
-} parameters;
-
-parameters prova;
+rt_flag_t STATUS_THREAD_1;
+rt_flag_t STATUS_THREAD_2;
 
 #endif

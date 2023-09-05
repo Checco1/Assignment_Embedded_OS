@@ -8,6 +8,7 @@
 #include "./Thread_Function/config.h"
 
 void random_mixer();
+void backup();
 void printer();
 
 #endif
