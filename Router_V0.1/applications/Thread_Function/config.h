@@ -28,7 +28,7 @@ int active_user;
 //Pointers for threads
 rt_thread_t thread1;
 rt_thread_t thread2;
-struct rt_thread watchdog;
+//struct rt_thread watchdog;
 
 //Pointers for Semaphore
 struct rt_semaphore active_sem;
@@ -36,7 +36,7 @@ struct rt_semaphore matrix_sem;
 struct rt_semaphore users_sem;
 
 //Pointers for timers
-struct rt_timer wdg_monitor_timer;
+struct rt_timer monitor_timer;
 struct rt_timer wdg_timer;
 
 //Thread status flags

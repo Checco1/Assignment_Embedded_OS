@@ -50,30 +50,56 @@ void random_mixer(){
             rt_kprintf("Matrix Updated!\n");
 
             STATUS_THREAD_1 = ALIVE;
-            rt_thread_delay(RT_TICK_PER_SECOND*5);
+            rt_thread_delay(RT_TICK_PER_SECOND*20);
         }
     }
 };
 
 void backup(){
 
+    extern rt_flag_t STATUS_THREAD_1;
+    extern rt_flag_t STATUS_THREAD_2;
     extern rt_thread_t thread1;
     extern rt_thread_t thread2;
     extern struct rt_semaphore matrix_sem;
 
-    thread1 = rt_thread_create("thread1",
-                            random_mixer, RT_NULL,
-                            1024,
-                            30, 5);
+    rt_err_t ret;
 
-    rt_thread_startup(thread1);
+    if ((STATUS_THREAD_1 != DEAD) && (STATUS_THREAD_1 != DEAD)) {
+        rt_kprintf("INFO:   No THREAD is dead \n");
+        rt_kprintf("\n");
 
-    thread2 = rt_thread_create("thread2",
-                            solver, RT_NULL,
-                            4096,
-                            20, 5);
+    }
 
-    rt_thread_startup(thread2);
+    if (STATUS_THREAD_1 == DEAD) {
+        thread1 = rt_thread_create("thread1",
+                                random_mixer, RT_NULL,
+                                1024,
+                                30, 5);
+
+        ret = rt_thread_startup(thread1);
+        if (ret != RT_EOK) {
+            rt_kprintf("ERROR:   THREAD 1 not recreated! \n");
+            rt_kprintf("\n");
+        } else {
+            rt_kprintf("INFO:   THREAD 1 recreated! \n");
+            rt_kprintf("\n");
+        }
+    }
+
+    if (STATUS_THREAD_2 == DEAD) {
+        thread2 = rt_thread_create("thread2",
+                                solver, RT_NULL,
+                                4096,
+                                20, 5);
+
+        ret = rt_thread_startup(thread2);
+        if (ret != RT_EOK) {
+            rt_kprintf("ERROR:   THREAD 2 not recreated! \n");
+        } else {
+            rt_kprintf("INFO:   THREAD 2 recreated! \n");
+        }
+    }
 };
 
 void printer(){

@@ -1,8 +1,9 @@
 #include "Thread_Function/wdg.h"
+#include <rthw.h>
 
 
 
-void wdg_monitor_timeout()
+void monitor_timeout()
 {
     extern rt_flag_t STATUS_THREAD_1;
     extern rt_flag_t STATUS_THREAD_2;
@@ -12,7 +13,7 @@ void wdg_monitor_timeout()
 
     rt_tick_t clock_tick;
     clock_tick = rt_tick_get();
-    rt_kprintf("WHATCHDOG Timer check at %d clock tick\n", clock_tick);
+    rt_kprintf("MONITOR Timer check at %d clock tick\n", clock_tick);
 
     if (STATUS_THREAD_1 == ALIVE && STATUS_THREAD_2 == ALIVE) {
 
@@ -29,22 +30,32 @@ void wdg_monitor_timeout()
 
     } else {
 
-        if (STATUS_THREAD_1 != DEAD && STATUS_THREAD_2 != DEAD){
-        rt_thread_delete(thread2);
-        rt_thread_delete(thread1);
-        STATUS_THREAD_1 = DEAD;
-        STATUS_THREAD_2 = DEAD;
-        rt_kprintf("NO BUENO!!! \n");
-        rt_kprintf("STATUS_THREAD_1 is %d\n", STATUS_THREAD_1);
-        rt_kprintf("STATUS_THREAD_2 is %d\n", STATUS_THREAD_2);
-        return;
+        if (STATUS_THREAD_1 == UNKNOWN){
+            rt_thread_delete(thread1);
+            STATUS_THREAD_1 = DEAD;
+            rt_kprintf("\n");
+            rt_kprintf("INFO:   THREAD 1 does not respond! \n");
+            rt_kprintf("    STATUS_THREAD_1 is %d\n", STATUS_THREAD_1);
+            rt_kprintf("    THREAD 1 killed\n");
+            rt_kprintf("\n");
+            return;
         }
 
+        if (STATUS_THREAD_2 == UNKNOWN){
+            rt_thread_delete(thread2);
+            STATUS_THREAD_2 = DEAD;
+            rt_kprintf("\n");
+            rt_kprintf("INFO:   THREAD 2 does not respond! \n");
+            rt_kprintf("    STATUS_THREAD_2 is %d\n", STATUS_THREAD_2);
+            rt_kprintf("    THREAD 2 killed\n");
+            rt_kprintf("\n");
+            return;
+        }
     }
-
 }
 
 void wdg_timeout()
 {
     rt_kprintf("WATCHDOG is called, time is up!!! \n");
+    rt_kprintf("The killed threads should be recreated!!! \n");
 }

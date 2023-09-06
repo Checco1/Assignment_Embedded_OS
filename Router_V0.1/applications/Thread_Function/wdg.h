@@ -8,7 +8,7 @@
 #include "./Thread_Function/Thread_1.h"
 #include "./Thread_Function/Thread_2.h"
 
-void wdg_monitor_timeout();
+void monitor_timeout();
 void wdg_timeout();
 
 #endif

@@ -15,7 +15,8 @@ int main(void)
     extern rt_thread_t thread2;
     extern struct rt_semaphore matrix_sem;
     extern struct rt_semaphore users_sem;
-    extern struct rt_timer wdg_monitor_timer;
+    extern struct rt_timer monitor_timer;
+    extern struct rt_timer wdg_timer;
 
     extern usr users[MAX_USER];
 
@@ -51,14 +52,24 @@ int main(void)
     rt_thread_startup(thread2);
 
     /* Initialize WDG MONITOR Timer */
-//    rt_timer_init(&wdg_monitor_timer, "wdg_monitor_timer",  /* Timer name is timer1 */
-//                    wdg_monitor_timeout, /* Callback handler for timeout */
-//                    RT_NULL, /* Entry parameter of the timeout function */
-//                    RT_TICK_PER_SECOND*WDG_MONITOR_TIME_SEC, /* Timing length in OS Tick, 10 OS Tick */
-//                    RT_TIMER_FLAG_PERIODIC); /* Periodic timer */
+    rt_timer_init(&monitor_timer, "wdg_monitor_timer",  /* Timer name is timer1 */
+                    monitor_timeout, /* Callback handler for timeout */
+                    RT_NULL, /* Entry parameter of the timeout function */
+                    RT_TICK_PER_SECOND*WDG_MONITOR_TIME_SEC, /* Timing length in OS Tick, 10 OS Tick */
+                    RT_TIMER_FLAG_PERIODIC); /* Periodic timer */
 
     /* Start WDG MONITOR Timer */
-    //rt_timer_start(&wdg_monitor_timer);
+    rt_timer_start(&monitor_timer);
+
+    /* Initialize WDG MONITOR Timer */
+    rt_timer_init(&wdg_timer, "wdg_monitor_timer",  /* Timer name is timer1 */
+                    wdg_timeout, /* Callback handler for timeout */
+                    RT_NULL, /* Entry parameter of the timeout function */
+                    RT_TICK_PER_SECOND*WDG_TIME_SEC, /* Timing length in OS Tick, 10 OS Tick */
+                    RT_TIMER_FLAG_PERIODIC); /* Periodic timer */
+
+    /* Start WDG MONITOR Timer */
+    rt_timer_start(&wdg_timer);
 
     return 0;
 }
