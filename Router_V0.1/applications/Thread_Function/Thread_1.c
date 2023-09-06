@@ -65,7 +65,7 @@ void backup(){
 
     rt_err_t ret;
 
-    if ((STATUS_THREAD_1 != DEAD) && (STATUS_THREAD_1 != DEAD)) {
+    if ((STATUS_THREAD_1 != DEAD) && (STATUS_THREAD_2 != DEAD)) {
         rt_kprintf("INFO:   No THREAD is dead \n");
         rt_kprintf("\n");
 
