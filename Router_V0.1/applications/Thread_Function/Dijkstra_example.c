@@ -11,9 +11,9 @@
 
 extern int active_user;
 
-// Funzione per stampare le distanze e i percorsi più brevi
+// Function to print the shortest paths
 void printSolution(int dist[], int parent[], int src) {
-    printf("Nodo \t Distanza \t Percorso\n");
+    printf("Node \t Distance \t Path\n");
     for (int i = 0; i < V; i++) {
         printf("%d \t %d \t\t ", i, dist[i]);
         printPath(parent, i);
@@ -21,7 +21,7 @@ void printSolution(int dist[], int parent[], int src) {
     }
 };
 
-// Funzione per trovare l'indice del nodo con la distanza minima
+//Function to find the index of minimum distance node
 int findMinDistance(int dist[], int visited[]) {
     int min = INT_MAX, minIndex;
     for (int i = 0; i < V; i++) {
@@ -33,7 +33,7 @@ int findMinDistance(int dist[], int visited[]) {
     return minIndex;
 }
 
-// Funzione per stampare il percorso più breve
+// Function to print the shortest path
 void printPath(int parent[], int j) {
     if (parent[j] == -1) {
         printf("%d ", j);
@@ -43,19 +43,19 @@ void printPath(int parent[], int j) {
     printf("%d ", j);
 }
 
-// Funzione per l'algoritmo di Dijkstra
+// Function for Dijkstra Algorithm
 void dijkstra(int graph[V][V], int src) {
-    int dist[V]; // Array delle distanze minime
-    int visited[V]; // Array dei nodi visitati
-    int parent[V]; // Array dei nodi predecessori
-    // Inizializzazione
+    int dist[V]; // Array of minimum distances
+    int visited[V]; // Array of visited nodes
+    int parent[V]; // Array of predecessors
+    // Initialization
     for (int i = 0; i < V; i++) {
         dist[i] = INT_MAX;
         visited[i] = 0;
         parent[i] = -1;
     }
     dist[src] = 0;
-    // Ciclo principale
+    // Main Cycle
     for (int count = 0; count < V-1; count++) {
         int u = findMinDistance(dist, visited);
         visited[u] = 1;
@@ -69,7 +69,7 @@ void dijkstra(int graph[V][V], int src) {
 
     updatestruct(dist, src);
 
-    // Stampa la soluzione
+    // Print the solution
     //printSolution(dist, parent, src);
 }
 

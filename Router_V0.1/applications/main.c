@@ -8,6 +8,7 @@
 #include "./Thread_Function/Thread_1.h"
 #include "./Thread_Function/Thread_2.h"
 #include "./Thread_Function/wdg.h"
+#include "./Thread_Function/uart.h"
 
 int main(void)
 {
