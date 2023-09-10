@@ -23,7 +23,7 @@ void printPathDfs(int path[], int path_length, int graph[V][V]) {
         rt_sem_release(&users_sem);
 
         weight += graph[from][to];
-        printf("%s -> %s (Weight: %d) ", from_s, to_s, graph[from][to]);
+        printf("%s -> %s (Weight: %d) \n", from_s, to_s, graph[from][to]);
     }
     printf("\nTotal Weight: %d\n", weight);
 }
