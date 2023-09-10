@@ -18,6 +18,6 @@ void solver(){
         rt_sem_release(&matrix_sem);
 
         STATUS_THREAD_2 = ALIVE;
-        rt_thread_delay(RT_TICK_PER_SECOND*15);
+        rt_thread_delay(RT_TICK_PER_SECOND*3);
     }
 }

@@ -29,6 +29,7 @@ void random_mixer(){
                     }
                 }
             } while (1);
+            rt_thread_delay(RT_TICK_PER_SECOND*5);
             //Ending Critical Section USER STRUCT
             rt_sem_release(&users_sem);
 
@@ -47,10 +48,10 @@ void random_mixer(){
 
             rt_sem_release(&matrix_sem);
 
-            rt_kprintf("Matrix Updated!\n");
+            //rt_kprintf("Matrix Updated!\n");
 
             STATUS_THREAD_1 = ALIVE;
-            rt_thread_delay(RT_TICK_PER_SECOND*20);
+
         }
     }
 };
@@ -59,9 +60,12 @@ void backup(){
 
     extern rt_flag_t STATUS_THREAD_1;
     extern rt_flag_t STATUS_THREAD_2;
+    extern int wdg_status;
     extern rt_thread_t thread1;
     extern rt_thread_t thread2;
     extern struct rt_semaphore matrix_sem;
+    extern struct rt_timer monitor_timer;
+    extern struct rt_timer wdg_timer;
 
     rt_err_t ret;
 
@@ -69,15 +73,20 @@ void backup(){
         rt_kprintf("INFO:   No THREAD is dead \n");
         rt_kprintf("\n");
 
+        return;
     }
+
+    rt_sem_control(&matrix_sem, RT_IPC_CMD_RESET, (void*)1);
+    rt_sem_control(&users_sem, RT_IPC_CMD_RESET, (void*)1);
 
     if (STATUS_THREAD_1 == DEAD) {
         thread1 = rt_thread_create("thread1",
                                 random_mixer, RT_NULL,
-                                1024,
-                                30, 5);
+                                STACK_SIZE_T1,
+                                RT_TICK_PER_SECOND*THREAD_1_SLICE_TIME, PRIORITY_T1);
 
         ret = rt_thread_startup(thread1);
+
         if (ret != RT_EOK) {
             rt_kprintf("ERROR:   THREAD 1 not recreated! \n");
             rt_kprintf("\n");
@@ -85,20 +94,40 @@ void backup(){
             rt_kprintf("INFO:   THREAD 1 recreated! \n");
             rt_kprintf("\n");
         }
+        STATUS_THREAD_1 = ALIVE;
     }
 
     if (STATUS_THREAD_2 == DEAD) {
         thread2 = rt_thread_create("thread2",
                                 solver, RT_NULL,
-                                4096,
-                                20, 5);
+                                STACK_SIZE_T2,
+                                RT_TICK_PER_SECOND*THREAD_2_SLICE_TIME, PRIORITY_T2);
 
         ret = rt_thread_startup(thread2);
+
         if (ret != RT_EOK) {
             rt_kprintf("ERROR:   THREAD 2 not recreated! \n");
         } else {
             rt_kprintf("INFO:   THREAD 2 recreated! \n");
         }
+        STATUS_THREAD_2 = ALIVE;
+    }
+
+
+    if (wdg_status == DEAD) {
+        rt_tick_t resetTimeValue;
+
+        resetTimeValue = RT_TICK_PER_SECOND*WDG_MONITOR_TIME_SEC;
+        rt_timer_stop(&monitor_timer);
+        rt_timer_control(&monitor_timer, RT_TIMER_CTRL_SET_TIME, &resetTimeValue);
+        rt_timer_start(&monitor_timer);
+
+        resetTimeValue = RT_TICK_PER_SECOND*WDG_TIME_SEC;
+        rt_timer_stop(&wdg_timer);
+        rt_timer_control(&wdg_timer, RT_TIMER_CTRL_SET_TIME, &resetTimeValue);
+        rt_timer_start(&wdg_timer);
+
+        wdg_status = ALIVE;
     }
 };
 

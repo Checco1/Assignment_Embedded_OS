@@ -65,6 +65,7 @@ void createUser(int argc, char *argv[]){
             rt_strncpy(users[i].name, user, sizeof(user));
             users[i].isActive = TRUE;
             newUser=1;
+            break;
         }
     }
     rt_sem_release(&users_sem);

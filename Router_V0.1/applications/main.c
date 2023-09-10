@@ -18,8 +18,27 @@ int main(void)
     extern struct rt_semaphore users_sem;
     extern struct rt_timer monitor_timer;
     extern struct rt_timer wdg_timer;
+    extern int g_matrix[MAX_USER][MAX_USER];
 
     extern usr users[MAX_USER];
+
+    for (int i = 0; i < MAX_USER; ++i) {
+        for (int j = 0; j < MAX_USER; ++j) {
+            if (i == j) {
+                users[i].distance[j] = 0;
+            } else {
+                users[i].distance[j] = -1;
+            }
+        }
+        users[i].isActive = FALSE;
+        users[i].name[0] = '\0';
+    }
+
+    for (int i = 0; i < MAX_USER; ++i) {
+        for (int j = 0; j < MAX_USER; ++j) {
+            g_matrix[i][j] = 0;
+        }
+    }
 
     rt_sem_init(&matrix_sem, "matrixsem", 1, RT_IPC_FLAG_FIFO);
     rt_sem_init(&users_sem, "usersem", 1, RT_IPC_FLAG_FIFO);
@@ -40,17 +59,19 @@ int main(void)
 
     thread1 = rt_thread_create("thread1",
                             random_mixer, RT_NULL,
-                            1024,
-                            20, 5);
+                            STACK_SIZE_T1,
+                            RT_TICK_PER_SECOND*THREAD_1_SLICE_TIME, PRIORITY_T1);
 
     rt_thread_startup(thread1);
+    STATUS_THREAD_1 = ALIVE;
 
     thread2 = rt_thread_create("thread2",
                             solver, RT_NULL,
-                            4096,
-                            20, 5);
+                            STACK_SIZE_T2,
+                            RT_TICK_PER_SECOND*THREAD_2_SLICE_TIME, PRIORITY_T2);
 
     rt_thread_startup(thread2);
+    STATUS_THREAD_2 = ALIVE;
 
     /* Initialize WDG MONITOR Timer */
     rt_timer_init(&monitor_timer, "wdg_monitor_timer",  /* Timer name is timer1 */
