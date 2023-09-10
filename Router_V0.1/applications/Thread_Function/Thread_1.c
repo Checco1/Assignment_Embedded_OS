@@ -29,7 +29,6 @@ void random_mixer(){
                     }
                 }
             } while (1);
-            rt_thread_delay(RT_TICK_PER_SECOND*5);
             //Ending Critical Section USER STRUCT
             rt_sem_release(&users_sem);
 
@@ -51,6 +50,7 @@ void random_mixer(){
             //rt_kprintf("Matrix Updated!\n");
 
             STATUS_THREAD_1 = ALIVE;
+            rt_thread_delay(RT_TICK_PER_SECOND*5);
 
         }
     }
@@ -83,7 +83,7 @@ void backup(){
         thread1 = rt_thread_create("thread1",
                                 random_mixer, RT_NULL,
                                 STACK_SIZE_T1,
-                                RT_TICK_PER_SECOND*THREAD_1_SLICE_TIME, PRIORITY_T1);
+                                PRIORITY_T1, RT_TICK_PER_SECOND*THREAD_1_SLICE_TIME);
 
         ret = rt_thread_startup(thread1);
 
@@ -101,7 +101,7 @@ void backup(){
         thread2 = rt_thread_create("thread2",
                                 solver, RT_NULL,
                                 STACK_SIZE_T2,
-                                RT_TICK_PER_SECOND*THREAD_2_SLICE_TIME, PRIORITY_T2);
+                                PRIORITY_T2, RT_TICK_PER_SECOND*THREAD_2_SLICE_TIME);
 
         ret = rt_thread_startup(thread2);
 

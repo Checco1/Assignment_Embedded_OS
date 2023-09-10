@@ -105,7 +105,7 @@ static int uart_comm(int argc, char *argv[])
     rt_device_write(serial, 0, str, (sizeof(str) - 1));
 
     /* Create a serial thread */
-    rt_thread_t thread = rt_thread_create("serial", serial_thread_entry, RT_NULL, 4096, 25, 10);
+    rt_thread_t thread = rt_thread_create("serial", serial_thread_entry, RT_NULL, 4096, 20, 10);
     /* Start the thread successfully */
     if (thread != RT_NULL)
     {

@@ -60,7 +60,7 @@ int main(void)
     thread1 = rt_thread_create("thread1",
                             random_mixer, RT_NULL,
                             STACK_SIZE_T1,
-                            RT_TICK_PER_SECOND*THREAD_1_SLICE_TIME, PRIORITY_T1);
+                            PRIORITY_T1, RT_TICK_PER_SECOND*THREAD_1_SLICE_TIME);
 
     rt_thread_startup(thread1);
     STATUS_THREAD_1 = ALIVE;
@@ -68,7 +68,7 @@ int main(void)
     thread2 = rt_thread_create("thread2",
                             solver, RT_NULL,
                             STACK_SIZE_T2,
-                            RT_TICK_PER_SECOND*THREAD_2_SLICE_TIME, PRIORITY_T2);
+                            PRIORITY_T2, RT_TICK_PER_SECOND*THREAD_2_SLICE_TIME);
 
     rt_thread_startup(thread2);
     STATUS_THREAD_2 = ALIVE;

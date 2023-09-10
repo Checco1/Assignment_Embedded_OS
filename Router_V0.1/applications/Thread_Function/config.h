@@ -10,12 +10,12 @@
 #define ALIVE 0
 #define UNKNOWN 1
 #define DEAD 2
-#define WDG_MONITOR_TIME_SEC 6    // 600 tick
-#define WDG_TIME_SEC 7
-#define THREAD_1_SLICE_TIME 0.06
-#define THREAD_2_SLICE_TIME 0.06
-#define PRIORITY_T1 5
-#define PRIORITY_T2 5
+#define WDG_MONITOR_TIME_SEC 12    // 600 tick
+#define WDG_TIME_SEC 15
+#define THREAD_1_SLICE_TIME 0.05
+#define THREAD_2_SLICE_TIME 0.05
+#define PRIORITY_T1 20
+#define PRIORITY_T2 20
 #define STACK_SIZE_T1 1024
 #define STACK_SIZE_T2 4096
 
